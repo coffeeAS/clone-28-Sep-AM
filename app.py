@@ -4,7 +4,7 @@ import os
 
 model = genai.GenerativeModel("gemini-1.5-flash")
 api = os.getenv("MAKERSUITE")
-genai.configure(api_key="AIzaSyC1e5dqsBmXe572MhUF4elG_UgRKhnX-oM")
+genai.configure(api_key=api)
 
 app = Flask(__name__)
 
