@@ -1,6 +1,8 @@
 from flask import Flask,render_template,request
 import google.generativeai as genai
 import os
+import numpy as np
+import textblob
 
 model = genai.GenerativeModel("gemini-1.5-flash")
 api = os.getenv("MAKERSUITE")
@@ -21,6 +23,27 @@ def prediction_result_DBS():
     q = float(request.form.get("q"))
     r = (-50.6 * q) + 90.2
     return(render_template("prediction_result_DBS.html",r=r))
+
+@app.route("/prediction_credibility",methods=["GET","POST"])
+def prediction_credibility():
+    return(render_template("prediction_credibility.html"))
+
+@app.route("/prediction_credibilityresult",methods=["GET","POST"])
+def prediction_credibilityresult():
+    q = float(request.form.get("q"))
+    r = (-0.00010453 * q) + 1.23750714
+    r = np.where(r>=0.5,"Creditable", "Not Creditable")
+    return(render_template("prediction_credibilityresult.html",r=r))
+
+@app.route("/sentiment_analysis",methods=["GET","POST"])
+def sentiment_analysis():
+    return(render_template("sentiment_analysis.html"))
+
+@app.route("/sentiment_analysisresult",methods=["GET","POST"])
+def sentiment_analysisresult():
+    q = request.form.get("q")
+    r = textblob.TextBlob(q).sentiment
+    return(render_template("sentiment_analysisresult.html",r=r))
 
 @app.route("/faq",methods=["GET","POST"])
 def faq():
